@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
-    "module": "ESNext",
-    "strict": true,
+    "baseUrl": "./",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext"],
+    "module": "CommonJS",
     "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "outDir": "./dist/",
+    "removeComments": true,
     "resolveJsonModule": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "files": ["src/index.ts"],
+  "exclude": ["node_modules",
+    "__test__", "dist", "**/*spec.ts"]
 }
