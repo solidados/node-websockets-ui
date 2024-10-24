@@ -1,1 +1,1 @@
-# node-websockets-ui
+# Battleship game
