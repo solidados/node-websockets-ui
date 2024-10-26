@@ -1,103 +1,102 @@
 import { WebSocket, WebSocketServer } from 'ws';
+import crypto from 'node:crypto';
+import { players } from '../db';
+import {
+  Player,
+  RegistrationRequest,
+  RegistrationData,
+  RegistrationResponse,
+} from '../types';
 
-interface Player {
-  id: string;
-  name: string;
-  password: string;
-  wins: number;
-}
-
-interface Room {
-  id: string;
-  players: Player[];
-}
-
-const players: Player[] = [];
-const rooms: Room[] = [];
-
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 3000 });
 
 wss.on('connection', (ws: WebSocket) => {
   console.log(`New Client connected`);
 
-  ws.on('message', (message: string) => {
-    const parsedMessage = JSON.parse(message);
-    console.log(`Received: ${parsedMessage}`);
-
-    handleMessage(ws, parsedMessage);
-  });
-
-  ws.on('close', () => {
-    console.log(`Client was disconnected`);
-  });
+  ws.on('message', (message: string) => handleIncomingMessage(ws, message));
+  ws.on('close', () => console.log(`Client was disconnected`));
 });
 
-function handleMessage(ws: WebSocket, message: any) {
-  switch (message.type) {
-    case 'reg':
-      registerPlayer(ws, message.data);
-      break;
-    case 'create_room':
-      createRoom(ws);
-      break;
-    default:
-      ws.send(JSON.stringify({ error: `Unknown command` }));
+function handleIncomingMessage(ws: WebSocket, message: string) {
+  const parsedMessage = parseJSON<RegistrationRequest>(message, ws);
+  if (!parsedMessage || parsedMessage.type !== 'reg') {
+    return sendError(ws, 'Unknown or invalid command');
+  }
+
+  const registrationData = parseJSON<RegistrationData>(parsedMessage.data, ws);
+  if (!registrationData) return;
+
+  registerPlayer(ws, registrationData);
+}
+
+function parseJSON<T>(data: string, ws: WebSocket): T | null {
+  try {
+    return JSON.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Invalid JSON format: ${error.message}`);
+    } else {
+      console.error('Unknown error during JSON parsing');
+    }
+    sendError(ws, 'Invalid JSON format');
+    return null;
   }
 }
 
-function registerPlayer(
-  ws: WebSocket,
-  data: { name: string; password: string },
-) {
-  const existingPlayer: Player | undefined = players.find(
-    (player: Player): boolean => player.name === data.name,
+function registerPlayer(ws: WebSocket, { name, password }: RegistrationData) {
+  const existingPlayer = players.find(
+    (player: Player): boolean => player.name === name,
   );
+  const response: RegistrationResponse = existingPlayer
+    ? createResponse(name, existingPlayer.id, true, 'Player already exists')
+    : createNewPlayerResponse(name, password);
 
-  if (existingPlayer) {
-    ws.send(
-      JSON.stringify({
-        type: 'reg',
-        data: {
-          name: data.name,
-          index: existingPlayer.id,
-          error: false,
-          errorText: '',
-        },
-        id: 0,
-      }),
-    );
-  } else {
-    const newPlayer: Player = { id: crypto.randomUUID(), ...data, wins: 0 };
-    players.push(newPlayer);
-    ws.send(
-      JSON.stringify({
-        type: 'reg',
-        data: {
-          name: newPlayer.name,
-          index: newPlayer.id,
-          error: false,
-          errorText: '',
-        },
-        id: 0,
-      }),
-    );
+  sendResponse(ws, response);
+}
+
+function createNewPlayerResponse(
+  name: string,
+  password: string,
+): RegistrationResponse {
+  const newPlayer: Player = {
+    id: crypto.randomUUID(),
+    name,
+    password,
+    wins: 0,
+  };
+  players.push(newPlayer);
+  return createResponse(newPlayer.name, newPlayer.id, false, '');
+}
+
+function createResponse(
+  name: string,
+  id: string,
+  error: boolean,
+  errorText: string,
+): RegistrationResponse {
+  return {
+    type: 'reg',
+    data: JSON.stringify({ name, index: id, error, errorText }),
+    id: 0,
+  };
+}
+
+function sendResponse(ws: WebSocket, response: RegistrationResponse) {
+  try {
+    const jsonResponse = JSON.stringify(response);
+    console.log(`>>> Sending response: ${jsonResponse}`);
+    ws.send(jsonResponse);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Error sending response: ${error.message}`);
+    } else {
+      console.error('Unknown error during response sending');
+    }
+    sendError(ws, 'Failed to send response');
   }
 }
 
-function createRoom(ws: WebSocket) {
-  const newRoom: Room = { id: crypto.randomUUID(), players: [] };
-  rooms.push(newRoom);
-
-  ws.send(
-    JSON.stringify({
-      type: 'create_room',
-      data: {
-        idGame: newRoom.id,
-        idPlayer: crypto.randomUUID(),
-        id: 0,
-      },
-    }),
-  );
+function sendError(ws: WebSocket, errorText: string) {
+  const errorResponse = createResponse('', '', true, errorText);
+  sendResponse(ws, errorResponse);
 }
-
-console.log(`WebSocket server started on PORT: ${8080}`);
