@@ -15,7 +15,9 @@
     "strict": true,
     "target": "ESNext"
   },
-  "files": ["src/index.ts"],
+  "files": [
+    "src/app.ts"
+  ],
   "exclude": ["node_modules",
     "__test__", "dist", "**/*spec.ts"]
 }

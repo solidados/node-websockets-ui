@@ -2,10 +2,10 @@
     "name": "ws_task",
     "version": "1.0.0",
     "description": "Template for the WebSocket remote control task",
-    "main": "src/index.ts",
+    "main": "src/app.ts",
     "scripts": {
-        "start": "ts-node src/index.ts",
-        "start:dev": "ts-node-dev src/index.ts",
+        "start": "ts-node src/app.ts",
+        "start:dev": "ts-node-dev src/app.ts",
         "lint": "eslint src",
         "format": "prettier --write src",
         "test": "jest",

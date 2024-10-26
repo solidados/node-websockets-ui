@@ -5,7 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   target: 'node',
   mode: isProduction ? 'production' : 'development',
-  entry: resolve(__dirname, 'src', 'index.ts'),
+  entry: resolve(__dirname, 'src', 'app.ts'),
   output: {
     clean: true,
     filename: 'index.js',
