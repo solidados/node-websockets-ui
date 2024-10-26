@@ -1,9 +1,14 @@
+import { config } from 'dotenv';
 import { WebSocket, WebSocketServer } from 'ws';
 import { parseJSON } from '../logic/messageParser';
 import { registerPlayer } from '../logic/registerPlayer';
 import { RegistrationRequest, RegistrationData } from '../types';
 
-const wss = new WebSocketServer({ port: 3000 });
+config();
+
+const port: number = Number(process.env.WS_PORT) || 3000;
+
+const wss = new WebSocketServer({ port });
 
 wss.on('connection', (ws: WebSocket) => {
   console.log('New Client connected');
