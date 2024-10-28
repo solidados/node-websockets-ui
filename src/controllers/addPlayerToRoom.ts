@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { updateRooms } from './';
-import { createGameResponse } from '../utils/handleResponseMessages';
+import { createGameResponse } from '../utils';
 import {
   IGame,
   IPlayer,
@@ -11,6 +11,7 @@ import {
 
 const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
   const { rooms, players, sockets, deleteRoom, addGame } = db;
+
   const player: IPlayer | undefined = players.find(
     (player: IPlayer): boolean => player.index === ws.index,
   );
@@ -53,11 +54,11 @@ const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
 
       const message: string = createGameResponse(gameId, index);
       sockets[index].send(message);
-      console.log('Message sent:', message);
+      console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
     });
 
     addGame(game);
-    console.log(`THE GAME #${gameId} IS CREATED`);
+    console.log(`\x1b[35mThe Battlefield #${gameId} was created\x1b[0m`);
   }
 };
 
