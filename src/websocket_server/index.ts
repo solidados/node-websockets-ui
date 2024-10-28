@@ -6,9 +6,11 @@ import { finishResponse } from '../utils';
 import {
   IGame,
   IGamePlayer,
+  IPlayer,
   IRoom,
   WebSocketClient,
 } from '../types/interfaces';
+import { EOL } from 'ts-loader/dist/constants';
 
 const WS_PORT: number = Number(process.env.WS_PORT) || 3000;
 
@@ -45,20 +47,22 @@ wss.on('connection', (ws: WebSocketClient) => {
 
   ws.on('close', () => {
     if (ws.name) {
-      const player = findPlayerBySocketName(ws.name);
+      const player: IPlayer | undefined = findPlayerBySocketName(ws.name);
       if (!player) return;
 
       player.online = false;
-      const games = findGamesByPlayer(player.name);
-      const rooms = findRoomsByPlayer(player.name);
+      const games: IGame[] = findGamesByPlayer(player.name);
+      const rooms: IRoom[] = findRoomsByPlayer(player.name);
 
       if (!rooms || !games) return;
 
       rooms.forEach((room: IRoom) => deleteRoom(room.roomId));
 
       games.forEach((game: IGame) => {
-        const enemy = game.players.find((p) => p.index !== player.index);
-        const eIndex = enemy?.index;
+        const enemy: IGamePlayer | undefined = game.players.find(
+          (p: IGamePlayer): boolean => p.index !== player.index,
+        );
+        const eIndex: number | undefined = enemy?.index;
         if (!game.withBot) {
           game.players.forEach((player: IGamePlayer) => {
             const newMessage: string = finishResponse(eIndex!);
@@ -83,5 +87,5 @@ wss.on('connection', (ws: WebSocketClient) => {
 
 export const closeWebSocketServer = () => {
   wss.close();
-  console.log('WebSocket server closed!');
+  console.log(`${EOL}> \x1b[33mWebSocket server:\t\x1b[41m closed \x1b[0m`);
 };

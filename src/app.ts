@@ -15,7 +15,7 @@ httpServer.listen(HTTP_PORT, () =>
 process.on('SIGINT', () => {
   closeWebSocketServer();
   httpServer.close(() => {
-    console.log(`\x1b[33mHTTP server closed!\x1b[0m`);
+    console.log(`> \x1b[33mHTTP server:\t\t\x1b[41m closed \x1b[0m`);
     process.exit(0);
   });
 });
