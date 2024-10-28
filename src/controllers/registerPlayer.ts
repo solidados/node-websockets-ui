@@ -19,13 +19,13 @@ const registerPlayer = (
           ? { error: true, errorText: `User ${name} is already logged in` }
           : { index: existingPlayer.index, name, error: false, errorText: '' };
 
-    if (!existingPlayer.online && response.error !== true) {
+    if (!existingPlayer.online && !response.error) {
       existingPlayer.online = true;
       ws.index = existingPlayer.index;
       ws.name = name;
       setSocket(ws, existingPlayer.index);
     }
-    const message = registrationResponse(
+    const message: string = registrationResponse(
       name,
       existingPlayer.index,
       response.error,
@@ -36,20 +36,19 @@ const registerPlayer = (
     updateWinners();
     console.log('Message sent:', message);
   } else {
-    const player = new NewPlayer(name, password);
+    const player: NewPlayer = new NewPlayer(name, password);
     const { index } = player;
     addPlayer(player);
     setSocket(ws, index);
     player.online = true;
     ws.index = index;
     ws.name = name;
-    const message = registrationResponse(name, index, false, '');
+    const message: string = registrationResponse(name, index, false, '');
     ws.send(message);
     updateRooms();
     updateWinners();
     console.log('Message sent:', message);
   }
-  // console.log('Players', db.players);
 };
 
 export default registerPlayer;
