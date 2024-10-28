@@ -3,7 +3,7 @@ import { updateWinnersResponse } from '../utils/handleResponseMessages';
 
 const addWinnerByName = (name: string) => {
   const { winners, findWinner, addWinner } = db;
-  const wIndex = findWinner(name);
+  const wIndex: number = findWinner(name);
   if (wIndex !== -1) {
     winners[wIndex].wins++;
   } else {
@@ -16,7 +16,7 @@ const addWinnerByName = (name: string) => {
 const updateWinners = () => {
   const { sockets, winners } = db;
 
-  Object.keys(sockets).forEach((key) =>
+  Object.keys(sockets).forEach((key: string) =>
     sockets[key].send(updateWinnersResponse(winners)),
   );
 };
