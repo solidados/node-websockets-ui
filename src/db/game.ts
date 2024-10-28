@@ -1,6 +1,6 @@
+import { Board } from './board';
 import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
 import { IShip } from '../types/interfaces';
-import { Board } from './board';
 
 export class Game {
   ships: IShip[];
@@ -28,7 +28,6 @@ export class Game {
       });
     });
 
-    // console.log('gameBoard', gameBoard);
     return gameBoard;
   };
 
@@ -42,7 +41,6 @@ export class Game {
         shipsCoordinates.push([tX, tY]);
       }
     });
-    // console.log('shipsCoordinates', shipsCoordinates);
     return shipsCoordinates;
   };
 
@@ -53,12 +51,12 @@ export class Game {
     const tilesAround: number[][] = [];
 
     for (
-      let i = Math.max(x - 1, 0);
+      let i: number = Math.max(x - 1, 0);
       i <= (direction ? x + 1 : x + length);
       i++
     ) {
       for (
-        let j = Math.max(y - 1, 0);
+        let j: number = Math.max(y - 1, 0);
         j <= (direction ? y + length : y + 1);
         j++
       ) {
@@ -68,7 +66,6 @@ export class Game {
         }
       }
     }
-    // console.log('tilesAround', tilesAround);
     return tilesAround.filter(([x, y]) =>
       allShipsCoordinates.every(([tX, tY]) => tX !== x || tY !== y),
     );
@@ -79,17 +76,17 @@ export class Game {
     const { x, y } = position;
     const shipTiles: number[][] = [];
 
-    for (let i = 0; i < length; i++) {
-      const tX = direction ? x : x + i;
-      const tY = direction ? y + i : y;
+    for (let i: number = 0; i < length; i++) {
+      const tX: number = direction ? x : x + i;
+      const tY: number = direction ? y + i : y;
       shipTiles.push([tX, tY]);
     }
 
     return shipTiles;
   };
 
-  isShipKilled = (ship: IShip) => {
-    const shipTiles = this.getShipTiles(this.ships.indexOf(ship));
+  isShipKilled = (ship: IShip): boolean => {
+    const shipTiles: number[][] = this.getShipTiles(this.ships.indexOf(ship));
 
     for (const [x, y] of shipTiles) {
       if (this.gameBoard[x][y].status !== TILE_STATUS.DAMAGED) {
@@ -102,7 +99,7 @@ export class Game {
   handleAttack = (x: number, y: number) => {
     this.gameBoard[x][y].checked = true;
 
-    const shipIndex = this.ships.findIndex(
+    const shipIndex: number = this.ships.findIndex(
       ({ position, direction, length }) => {
         const { x: shipX, y: shipY } = position;
         return (
@@ -118,9 +115,8 @@ export class Game {
       return { x, y, status: ATTACK_STATUS.MISS };
     }
 
-    const currentShip = this.ships[shipIndex];
+    const currentShip: IShip = this.ships[shipIndex];
     this.gameBoard[x][y].status = TILE_STATUS.DAMAGED;
-    // console.log('attacked tile', this.gameBoard[x][y]);
 
     if (this.isShipKilled(currentShip)) {
       return {
