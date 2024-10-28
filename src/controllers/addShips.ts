@@ -1,9 +1,8 @@
 import { db } from '../db';
 import { Game } from '../db/game';
-import { changeTurn } from './';
 import { botShips } from './botFleetGeneration';
-import { handleRandomNumber } from '../utils/handleRandomNumber';
-import { startGameResponse } from '../utils/handleResponseMessages';
+import { changeTurn } from './';
+import { startGameResponse, handleRandomNumber } from '../utils';
 import {
   IGame,
   IGamePlayer,
@@ -24,7 +23,7 @@ const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
           player.index,
         );
         sockets[player.index].send(message);
-        console.log('Message sent:', message);
+        console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
       });
       changeTurn(gameId);
     }
@@ -39,7 +38,7 @@ const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
 
       const message: string = startGameResponse(ships, ws.index);
       sockets[ws.index]!.send(message);
-      console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
+      console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
       changeTurn(gameId);
     }
   } else {

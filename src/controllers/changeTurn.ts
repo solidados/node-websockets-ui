@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { ATTACK_STATUS } from '../types/enums';
-import { turnResponse } from '../utils/handleResponseMessages';
+import { turnResponse } from '../utils';
 import { botAttack } from './';
 
 const changeTurn = (gameId: number, status?: string) => {
@@ -37,7 +37,7 @@ const changeTurn = (gameId: number, status?: string) => {
       sockets[player.index].send(message);
     });
   }
-  console.log('Message sent:', message);
+  console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
 };
 
 export default changeTurn;

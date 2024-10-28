@@ -1,9 +1,5 @@
 import { db } from '../db';
-import { handleRandomNumber } from '../utils/handleRandomNumber';
-import {
-  attackResponse,
-  finishResponse,
-} from '../utils/handleResponseMessages';
+import { attackResponse, finishResponse, handleRandomNumber } from '../utils';
 import { changeTurn } from './';
 import { addWinnerByName } from './updateWinners';
 import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
@@ -64,13 +60,13 @@ const botFleetAttack = (gameId: number, data: string) => {
         ship.gameBoard.flat().every((tile) => tile.status !== TILE_STATUS.SHIP)
       ) {
         console.log(
-          `\x1b[35mThe Battleship #${gameId} is over. The winner is bot-enemy \x1b[44m\x1b[5m ${gameId} \x1b[25m\x1b[0m`,
+          `\x1b[35mThe Battleship #${gameId} is over. The winner is Bot Fleet-\x1b[44m ${gameId} \x1b[0m`,
         );
         const nonBotPlayer = findNonBotPlayer(game);
         if (nonBotPlayer) {
           sockets[nonBotPlayer.index].send(finishResponse(-1));
         }
-        addWinnerByName(`bot_${gameId}`);
+        addWinnerByName(`bot fleet ${gameId}`);
         deleteGame(gameId);
         return;
       }

@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { updateWinnersResponse } from '../utils/handleResponseMessages';
+import { updateWinnersResponse } from '../utils';
 
 const addWinnerByName = (name: string) => {
   const { winners, findWinner, addWinner } = db;

@@ -1,8 +1,8 @@
 import { db } from '../db';
 import { NewPlayer } from '../db/player';
 import { updateRooms, updateWinners } from './';
-import { registrationResponse } from '../utils/handleResponseMessages';
-import { WebSocketClient } from '../types/interfaces';
+import { registrationResponse } from '../utils';
+import { IPlayer, WebSocketClient } from '../types/interfaces';
 
 const registerPlayer = (
   name: string,
@@ -10,7 +10,7 @@ const registerPlayer = (
   ws: WebSocketClient,
 ) => {
   const { addPlayer, findPlayer, setSocket } = db;
-  const existingPlayer = findPlayer(name);
+  const existingPlayer: IPlayer | undefined = findPlayer(name);
   if (existingPlayer) {
     const response =
       existingPlayer.password !== password
@@ -31,23 +31,28 @@ const registerPlayer = (
       response.error,
       response.errorText,
     );
+
     ws.send(message);
     updateRooms();
     updateWinners();
-    console.log('Message sent:', message);
+    console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
   } else {
     const player: NewPlayer = new NewPlayer(name, password);
     const { index } = player;
+
     addPlayer(player);
     setSocket(ws, index);
+
     player.online = true;
     ws.index = index;
     ws.name = name;
+
     const message: string = registrationResponse(name, index, false, '');
+
     ws.send(message);
     updateRooms();
     updateWinners();
-    console.log('Message sent:', message);
+    console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
   }
 };
 

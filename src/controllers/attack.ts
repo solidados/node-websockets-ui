@@ -1,14 +1,11 @@
 import { db } from '../db';
-import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
-import { IGame, IGamePlayer, WebSocketClient } from '../types/interfaces';
-import {
-  attackResponse,
-  finishResponse,
-} from '../utils/handleResponseMessages';
+import { attackResponse, finishResponse } from '../utils';
 import { changeTurn } from './';
 import { addWinnerByName } from './updateWinners';
 import { Game } from '../db/game';
 import { Board } from '../db/board';
+import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
+import { IGame, IGamePlayer, WebSocketClient } from '../types/interfaces';
 
 const attack = (data: string, ws: WebSocketClient) => {
   const { findGame, findEnemy, sockets, findNonBotPlayer, deleteGame } = db;
@@ -55,7 +52,7 @@ const attack = (data: string, ws: WebSocketClient) => {
         .every((tile: Board): boolean => tile.status !== TILE_STATUS.SHIP)
     ) {
       console.log(
-        `\x1b[35mThe Battleship #${gameId} is over. The winner is \x1b[44m\x1b[5m ${ws.name} \x1b[25m\x1b[0m`,
+        `\x1b[35mThe Battleship #${gameId} is over. The winner is \x1b[44m ${ws.name} \x1b[0m`,
       );
       if (!game.withBot) {
         game.players.forEach((player: IGamePlayer) => {

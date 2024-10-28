@@ -1,13 +1,13 @@
 import { db } from '../db';
 import { updateRooms } from './';
-import { createGameResponse } from '../utils/handleResponseMessages';
+import { createGameResponse } from '../utils';
 import { IGame, IRoom, IRoomUser, WebSocketClient } from '../types/interfaces';
 
 const singlePlay = (ws: WebSocketClient) => {
   const { rooms, deleteRoom, addRoom } = db;
   const room: IRoom = addRoom(ws);
   if (room) {
-    room.roomUsers.push({ name: `bot_${room.roomId}`, index: -1 });
+    room.roomUsers.push({ name: `bot fleet ${room.roomId}`, index: -1 });
   }
   updateRooms();
   const gameId: number = room.roomId;
@@ -21,7 +21,7 @@ const singlePlay = (ws: WebSocketClient) => {
 
   game.players.push(
     { index: ws.index, name: ws.name },
-    { index: -1, name: `bot_${gameId}` },
+    { index: -1, name: `bot fleet ${gameId}` },
   );
 
   const roomsToDelete: IRoom[] = rooms.filter((room: IRoom) =>
@@ -34,10 +34,10 @@ const singlePlay = (ws: WebSocketClient) => {
   const message: string = createGameResponse(gameId, ws.index);
   db.sockets[ws.index].send(message);
 
-  console.log('Message sent:', message);
+  console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
 
   db.addGame(game);
-  console.log(`THE GAME #${gameId} IS CREATED`);
+  console.log(`\x1b[35mThe Battlefield #${gameId} was created\x1b[0m`);
 };
 
 export default singlePlay;

@@ -1,11 +1,10 @@
 import { db } from '../db';
 import { Board } from '../db/board';
 import { attack } from './';
+import { handleRandomNumber } from '../utils';
 import { IGame, ITile, WebSocketClient } from '../types/interfaces';
-import { handleRandomNumber } from '../utils/handleRandomNumber';
 
 const randomAttack = (data: string, ws: WebSocketClient) => {
-  // console.log('randomAttack', data);
   const { gameId, indexPlayer } = JSON.parse(data);
   const { findGame, findEnemy } = db;
   const game: IGame = findGame(gameId);
