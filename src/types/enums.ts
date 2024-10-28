@@ -1,4 +1,4 @@
-export enum MESSAGE_TYPES {
+enum MESSAGE_TYPES {
   REGISTRATION = 'reg',
   UPDATE_WINNERS = 'update_winners',
   CREATE_ROOM = 'create_room',
@@ -13,3 +13,17 @@ export enum MESSAGE_TYPES {
   FINISH = 'finish',
   SINGLE_PLAY = 'single_play',
 }
+
+enum ATTACK_STATUS {
+  MISS = 'miss',
+  KILLED = 'killed',
+  SHOT = 'shot',
+}
+
+enum TILE_STATUS {
+  SHIP = 'ship',
+  DAMAGED = 'damaged',
+  EMPTY = 'empty',
+}
+
+export { MESSAGE_TYPES, ATTACK_STATUS, TILE_STATUS };

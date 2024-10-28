@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws';
+import { Game } from '../db/game';
 
 export interface WebSocketClient extends WebSocket {
   name: string;
@@ -36,6 +37,9 @@ export interface IGame {
   gameId: number;
   players: IGamePlayer[];
   currentPlayer: 0 | 1;
+  ships: {
+    [key: string]: Game;
+  };
   withBot?: boolean;
 }
 
