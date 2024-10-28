@@ -67,3 +67,12 @@ export interface IWinner {
   name: string;
   wins: number;
 }
+
+export type BotShipType = 'battleship' | 'cruiser' | 'submarine' | 'destroyer';
+
+export interface BotShip {
+  position: { x: number; y: number };
+  direction: boolean;
+  type: BotShipType;
+  length: number;
+}
