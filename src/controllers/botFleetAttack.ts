@@ -7,11 +7,11 @@ import {
 import { changeTurn } from './';
 import { addWinnerByName } from './updateWinners';
 import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
-import { ITile } from '../types/interfaces';
+import { IGame, ITile } from '../types/interfaces';
 
-const botAttack = (gameId: number, data: string) => {
+const botFleetAttack = (gameId: number, data: string) => {
   const { findGame, findEnemy, findNonBotPlayer, deleteGame } = db;
-  const game = findGame(gameId);
+  const game: IGame = findGame(gameId);
   if (!game) return;
 
   const currentPlayerIndex = game.currentPlayer;
@@ -63,7 +63,9 @@ const botAttack = (gameId: number, data: string) => {
       if (
         ship.gameBoard.flat().every((tile) => tile.status !== TILE_STATUS.SHIP)
       ) {
-        console.log(`THE GAME #${gameId} IS OVER! The winner is bot_${gameId}`);
+        console.log(
+          `\x1b[35mThe Battleship #${gameId} is over. The winner is bot-enemy \x1b[44m\x1b[5m ${gameId} \x1b[25m\x1b[0m`,
+        );
         const nonBotPlayer = findNonBotPlayer(game);
         if (nonBotPlayer) {
           sockets[nonBotPlayer.index].send(finishResponse(-1));
@@ -80,4 +82,4 @@ const botAttack = (gameId: number, data: string) => {
   }
 };
 
-export default botAttack;
+export default botFleetAttack;

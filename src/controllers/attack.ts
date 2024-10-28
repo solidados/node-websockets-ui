@@ -54,7 +54,9 @@ const attack = (data: string, ws: WebSocketClient) => {
         .flat()
         .every((tile: Board): boolean => tile.status !== TILE_STATUS.SHIP)
     ) {
-      console.log(`THE GAME #${gameId} IS OVER! The winner is ${ws.name}`);
+      console.log(
+        `\x1b[35mThe Battleship #${gameId} is over. The winner is \x1b[44m\x1b[5m ${ws.name} \x1b[25m\x1b[0m`,
+      );
       if (!game.withBot) {
         game.players.forEach((player: IGamePlayer) => {
           const message = finishResponse(ws.index);

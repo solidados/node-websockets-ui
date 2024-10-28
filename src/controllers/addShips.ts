@@ -1,7 +1,7 @@
 import { db } from '../db';
 import { Game } from '../db/game';
 import { changeTurn } from './';
-import { botShips } from '../utils/botStrategy';
+import { botShips } from './botFleetGeneration';
 import { getRandomNumber } from '../utils/getRandomNumber';
 import { startGameResponse } from '../utils/handleResponseMessages';
 import {

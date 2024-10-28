@@ -1,7 +1,7 @@
 export { default as addPlayerToRoom } from './addPlayerToRoom';
 export { default as addShips } from './addShips';
 export { default as attack } from './attack';
-export { default as botAttack } from './botAttack';
+export { default as botAttack } from './botFleetAttack';
 export { default as changeTurn } from './changeTurn';
 export { default as createRoom } from './createRoom';
 export { default as randomAttack } from './randomAttack';
