@@ -34,7 +34,7 @@ const singlePlay = (ws: WebSocketClient) => {
   const message: string = createGameResponse(gameId, ws.index);
   db.sockets[ws.index].send(message);
 
-  console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+  console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
 
   db.addGame(game);
   console.log(`\x1b[35mThe Battlefield #${gameId} was created\x1b[0m`);

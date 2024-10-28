@@ -1,7 +1,6 @@
 import { db } from '../db';
+import { changeTurn, addWinnerByName } from './';
 import { attackResponse, finishResponse } from '../utils';
-import { changeTurn } from './';
-import { addWinnerByName } from './updateWinners';
 import { Game } from '../db/game';
 import { Board } from '../db/board';
 import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';

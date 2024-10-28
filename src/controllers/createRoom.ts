@@ -1,13 +1,13 @@
 import { db } from '../db';
 import { updateRooms } from './';
-import { WebSocketClient } from '../types/interfaces';
+import { IPlayer, IRoom, WebSocketClient } from '../types/interfaces';
 
 const createRoom = (ws: WebSocketClient) => {
   const { findRoomsByPlayer, addRoom, findPlayerBySocketName } = db;
-  const player = findPlayerBySocketName(ws.name);
+  const player: IPlayer | undefined = findPlayerBySocketName(ws.name);
 
   if (player) {
-    const existingRooms = findRoomsByPlayer(player.name);
+    const existingRooms: IRoom[] = findRoomsByPlayer(player.name);
     if (existingRooms.length === 0) {
       addRoom(ws);
       updateRooms();

@@ -1,11 +1,12 @@
 import { db } from '../db';
-import { ATTACK_STATUS } from '../types/enums';
 import { turnResponse } from '../utils';
 import { botAttack } from './';
+import { ATTACK_STATUS } from '../types/enums';
+import { IGame, IGamePlayer } from '../types/interfaces';
 
 const changeTurn = (gameId: number, status?: string) => {
   const { findGame, sockets, findNonBotPlayer } = db;
-  const game = findGame(gameId);
+  const game: IGame = findGame(gameId);
   const { currentPlayer } = game;
 
   game.currentPlayer =
@@ -15,12 +16,11 @@ const changeTurn = (gameId: number, status?: string) => {
         : 0
       : currentPlayer;
 
-  // console.log('currentPlayer', currentPlayer);
-  const currentPlayerIndex = game.players[game.currentPlayer].index;
-  const message = turnResponse(currentPlayerIndex);
+  const currentPlayerIndex: number = game.players[game.currentPlayer].index;
+  const message: string = turnResponse(currentPlayerIndex);
 
   if (game.withBot) {
-    const nonBotPlayer = findNonBotPlayer(game);
+    const nonBotPlayer: IGamePlayer | undefined = findNonBotPlayer(game);
     if (nonBotPlayer) {
       sockets[nonBotPlayer.index].send(message);
     }
@@ -33,11 +33,11 @@ const changeTurn = (gameId: number, status?: string) => {
       }, 1000);
     }
   } else {
-    game.players.forEach((player) => {
+    game.players.forEach((player: IGamePlayer) => {
       sockets[player.index].send(message);
     });
   }
-  console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+  console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
 };
 
 export default changeTurn;

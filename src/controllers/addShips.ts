@@ -4,6 +4,7 @@ import { botShips } from './botFleetGeneration';
 import { changeTurn } from './';
 import { startGameResponse, handleRandomNumber } from '../utils';
 import {
+  BotShip,
   IGame,
   IGamePlayer,
   IShip,
@@ -23,7 +24,7 @@ const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
           player.index,
         );
         sockets[player.index].send(message);
-        console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+        console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
       });
       changeTurn(gameId);
     }
@@ -33,12 +34,12 @@ const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
         0,
         botShips.length - 1,
       );
-      const randomShips = botShips[randomShipsIndex];
+      const randomShips: BotShip[] = botShips[randomShipsIndex];
       game.ships[-1] = new Game(randomShips);
 
       const message: string = startGameResponse(ships, ws.index);
       sockets[ws.index]!.send(message);
-      console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+      console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
       changeTurn(gameId);
     }
   } else {

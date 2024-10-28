@@ -35,7 +35,7 @@ const registerPlayer = (
     ws.send(message);
     updateRooms();
     updateWinners();
-    console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+    console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
   } else {
     const player: NewPlayer = new NewPlayer(name, password);
     const { index } = player;
@@ -52,7 +52,7 @@ const registerPlayer = (
     ws.send(message);
     updateRooms();
     updateWinners();
-    console.log(`Message sent: \x1b[97m${message}\x1b[0m`);
+    console.log(`\x1b[32mMessage sent: \x1b[92m${message}\x1b[0m`);
   }
 };
 
