@@ -1,0 +1,11 @@
+export { default as addPlayerToRoom } from './addPlayerToRoom';
+export { default as addShips } from './addShips';
+export { default as attack } from './attack';
+export { default as botAttack } from './botFleetAttack';
+export { default as changeTurn } from './changeTurn';
+export { default as createRoom } from './createRoom';
+export { default as randomAttack } from './randomAttack';
+export { default as registerPlayer } from './registerPlayer';
+export { default as singlePlay } from './singlePlay';
+export { default as updateRooms } from './updateRoom';
+export { addWinnerByName, updateWinners } from './updateWinners';
