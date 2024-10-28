@@ -1,8 +1,13 @@
+/*
 import { WebSocket } from 'ws';
 import crypto from 'node:crypto';
 import { players } from '../db';
-import { Player, RegistrationData, RegistrationResponse } from '../types';
-import { createResponse, sendResponse } from './messageParser';
+import {
+  Player,
+  RegistrationData,
+  RegistrationResponse,
+} from '../types/interfaces';
+import { createResponse, sendResponse } from '.messageParser';
 
 export function registerPlayer(
   ws: WebSocket,
@@ -31,3 +36,4 @@ function createNewPlayerResponse(
   players.push(newPlayer);
   return createResponse(newPlayer.name, newPlayer.id, false, '');
 }
+*/

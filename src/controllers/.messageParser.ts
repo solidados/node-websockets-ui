@@ -1,5 +1,6 @@
+/*
 import { WebSocket } from 'ws';
-import { RegistrationResponse } from '../types';
+import { RegistrationResponse } from '../types/interfaces';
 
 export function parseJSON<T>(data: string, ws: WebSocket): T | null {
   try {
@@ -46,3 +47,4 @@ export function sendError(ws: WebSocket, errorText: string) {
   );
   sendResponse(ws, errorResponse);
 }
+*/
