@@ -2,7 +2,7 @@ import { db } from '../db';
 import { Board } from '../db/board';
 import { attack } from './';
 import { IGame, ITile, WebSocketClient } from '../types/interfaces';
-import { getRandomNumber } from '../utils/getRandomNumber';
+import { handleRandomNumber } from '../utils/handleRandomNumber';
 
 const randomAttack = (data: string, ws: WebSocketClient) => {
   // console.log('randomAttack', data);
@@ -26,7 +26,7 @@ const randomAttack = (data: string, ws: WebSocketClient) => {
   });
 
   if (tiles.length > 0) {
-    const randomNum: number = getRandomNumber(0, tiles.length - 1);
+    const randomNum: number = handleRandomNumber(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
     // console.log(`#${indexPlayer} player random attack:`, { x, y });
     attack(

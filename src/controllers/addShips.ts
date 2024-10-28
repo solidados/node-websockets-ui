@@ -2,7 +2,7 @@ import { db } from '../db';
 import { Game } from '../db/game';
 import { changeTurn } from './';
 import { botShips } from './botFleetGeneration';
-import { getRandomNumber } from '../utils/getRandomNumber';
+import { handleRandomNumber } from '../utils/handleRandomNumber';
 import { startGameResponse } from '../utils/handleResponseMessages';
 import {
   IGame,
@@ -30,7 +30,10 @@ const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
     }
 
     if (game.withBot) {
-      const randomShipsIndex: number = getRandomNumber(0, botShips.length - 1);
+      const randomShipsIndex: number = handleRandomNumber(
+        0,
+        botShips.length - 1,
+      );
       const randomShips = botShips[randomShipsIndex];
       game.ships[-1] = new Game(randomShips);
 

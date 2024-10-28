@@ -65,7 +65,7 @@ wss.on('connection', (ws: WebSocketClient) => {
             sockets[player.index].send(newMessage);
           });
           console.log(
-            `THE GAME #${game.gameId} IS OVER! The winner is ${enemy?.name}`,
+            `\x1b[35mThe Battleship #${game.gameId} is over. The winner is \x1b[44m\x1b[5m ${enemy?.name} \x1b[25m\x1b[0m`,
           );
           if (enemy) addWinnerByName(enemy.name);
         }

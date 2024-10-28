@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { getRandomNumber } from '../utils/getRandomNumber';
+import { handleRandomNumber } from '../utils/handleRandomNumber';
 import {
   attackResponse,
   finishResponse,
@@ -29,7 +29,7 @@ const botFleetAttack = (gameId: number, data: string) => {
   });
 
   if (tiles.length > 0) {
-    const randomNum = getRandomNumber(0, tiles.length - 1);
+    const randomNum = handleRandomNumber(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
     const { findGame, findEnemy, sockets } = db;
     const { gameId, indexPlayer } = JSON.parse(data);
