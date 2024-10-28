@@ -1,4 +1,4 @@
-import {BotShip, BotShipType} from '../types/interfaces';
+import { BotShip, BotShipType } from '../types/interfaces';
 
 const generateShip = (
   x: number,
