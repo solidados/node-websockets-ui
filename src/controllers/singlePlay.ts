@@ -1,17 +1,16 @@
 import { db } from '../db';
-import { createGameResponse } from '../utils/handleResponseMessages';
 import { updateRooms } from './';
-import { IGame, WebSocketClient } from '../types/interfaces';
+import { createGameResponse } from '../utils/handleResponseMessages';
+import { IGame, IRoom, IRoomUser, WebSocketClient } from '../types/interfaces';
 
 const singlePlay = (ws: WebSocketClient) => {
   const { rooms, deleteRoom, addRoom } = db;
-  const room = addRoom(ws);
+  const room: IRoom = addRoom(ws);
   if (room) {
     room.roomUsers.push({ name: `bot_${room.roomId}`, index: -1 });
   }
   updateRooms();
-  // console.log('rooms', db.rooms);
-  const gameId = room.roomId;
+  const gameId: number = room.roomId;
   const game: IGame = {
     gameId,
     players: [],
@@ -25,14 +24,14 @@ const singlePlay = (ws: WebSocketClient) => {
     { index: -1, name: `bot_${gameId}` },
   );
 
-  const roomsToDelete = rooms.filter((r) =>
-    r.roomUsers.some((user) => user.index === ws.index),
+  const roomsToDelete: IRoom[] = rooms.filter((room: IRoom) =>
+    room.roomUsers.some((user: IRoomUser): boolean => user.index === ws.index),
   );
-  roomsToDelete.forEach((room) => deleteRoom(room.roomId));
+  roomsToDelete.forEach((room: IRoom) => deleteRoom(room.roomId));
 
   updateRooms();
 
-  const message = createGameResponse(gameId, ws.index);
+  const message: string = createGameResponse(gameId, ws.index);
   db.sockets[ws.index].send(message);
 
   console.log('Message sent:', message);
