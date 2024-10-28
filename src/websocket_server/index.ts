@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import { db } from '../db';
-import { router } from '../router';
+import { router } from '../services';
 import { updateRooms, addWinnerByName } from '../controllers';
 import { finishResponse } from '../utils/handleResponseMessages';
 import {
