@@ -1,7 +1,7 @@
 import { MESSAGE_TYPES } from '../types/enums';
 import { IMessage, IRoom, IShip, IWinner } from '../types/interfaces';
 
-export const registrationResponse = (
+const registrationResponse = (
   name: string,
   index: number,
   error: boolean,
@@ -16,7 +16,7 @@ export const registrationResponse = (
   return JSON.stringify(message);
 };
 
-export const updateRoomsResponse = (rooms: IRoom[]) => {
+const updateRoomsResponse = (rooms: IRoom[]) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.UPDATE_ROOM,
     data: JSON.stringify(rooms),
@@ -26,7 +26,7 @@ export const updateRoomsResponse = (rooms: IRoom[]) => {
   return JSON.stringify(message);
 };
 
-export const createGameResponse = (roomId: number, playerId: number) => {
+const createGameResponse = (roomId: number, playerId: number) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.CREATE_GAME,
     data: JSON.stringify({
@@ -39,7 +39,7 @@ export const createGameResponse = (roomId: number, playerId: number) => {
   return JSON.stringify(message);
 };
 
-export const turnResponse = (currentPlayer: number) => {
+const turnResponse = (currentPlayer: number) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.TURN,
     data: JSON.stringify({
@@ -51,10 +51,7 @@ export const turnResponse = (currentPlayer: number) => {
   return JSON.stringify(message);
 };
 
-export const startGameResponse = (
-  ships: IShip[],
-  currentPlayerIndex: number,
-) => {
+const startGameResponse = (ships: IShip[], currentPlayerIndex: number) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.START_GAME,
     data: JSON.stringify({
@@ -67,7 +64,7 @@ export const startGameResponse = (
   return JSON.stringify(message);
 };
 
-export const attackResponse = (
+const attackResponse = (
   status: string,
   x: number,
   y: number,
@@ -86,7 +83,7 @@ export const attackResponse = (
   return JSON.stringify(message);
 };
 
-export const finishResponse = (winPlayer: number) => {
+const finishResponse = (winPlayer: number) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.FINISH,
     data: JSON.stringify({
@@ -98,7 +95,7 @@ export const finishResponse = (winPlayer: number) => {
   return JSON.stringify(message);
 };
 
-export const updateWinnersResponse = (winners: IWinner[]) => {
+const updateWinnersResponse = (winners: IWinner[]) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.UPDATE_WINNERS,
     data: JSON.stringify(winners),
@@ -106,4 +103,15 @@ export const updateWinnersResponse = (winners: IWinner[]) => {
   };
 
   return JSON.stringify(message);
+};
+
+export {
+  registrationResponse,
+  updateRoomsResponse,
+  createGameResponse,
+  turnResponse,
+  startGameResponse,
+  attackResponse,
+  finishResponse,
+  updateWinnersResponse,
 };
